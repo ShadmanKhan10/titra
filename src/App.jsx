@@ -1,11 +1,10 @@
 import React from "react";
+import Detection from "./Components/Detection";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <h1>Titra Project</h1>
-    </>
+    <div>
+      <Detection />
+    </div>
   );
 }
-
-export default App;

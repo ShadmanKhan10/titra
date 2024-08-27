@@ -104,7 +104,7 @@ function Detection() {
           <ul>
             {touchPoints.map((point, index) => (
               <li key={index}>
-                x: {point.x}, y: {point.y}
+                Point X: {point.x}, Point Y: {point.y}
               </li>
             ))}
           </ul>

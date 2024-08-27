@@ -12,7 +12,8 @@ function Detection() {
   const [touchPoints, setTouchPoints] = useState([]);
   const [recognizer, setRecognizer] = useState(null);
 
-  const socket = io("http://192.168.1.8:3000");
+  // const socket = io("http://192.168.1.8:3000");
+  const socket = io("http://192.168.43.175:3000");
 
   useEffect(() => {
     // Initialize the Recognizer with angles to detect
@@ -80,10 +81,23 @@ function Detection() {
     }
   }, [touchPoints, recognizer]);
 
-  const sendMessageToServer = () => {
-    socket.emit("message", "Established connection");
+  const sendMessageToServer18 = () => {
+    socket.emit("message", 18);
     console.log("Message sent to server: Established connection");
   };
+
+  const sendMessageToServer36 = () => {
+    socket.emit("message", 36);
+    console.log("Message sent to server: Established connection");
+  };
+
+  const sendMessageToServer54 = () => {
+    socket.emit("message", 54);
+    console.log("Message sent to server: Established connection");
+  };
+  socket.on("videoStatus", (msg) => {
+    console.log("videoStatus", msg);
+  });
 
   return (
     <>
@@ -120,7 +134,9 @@ function Detection() {
           </div>
         </header>
       </div>
-      <button onClick={sendMessageToServer}>Establish Connection</button>
+      <button onClick={sendMessageToServer18}>Establish Connection 18</button>
+      <button onClick={sendMessageToServer36}>Establish Connection 36</button>
+      <button onClick={sendMessageToServer54}>Establish Connection 54</button>
     </>
   );
 }

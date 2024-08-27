@@ -4,12 +4,15 @@ import Match from "../libs/Match";
 import Triangle from "../libs/Triangle";
 import MathUtils from "../libs/MathUtils";
 import Recognizer from "../libs/Recognizer";
+import { io } from "socket.io-client";
 
 function Detection() {
   const [angle, setAngle] = useState(null);
   const [orientation, setOrientation] = useState(null);
   const [touchPoints, setTouchPoints] = useState([]);
   const [recognizer, setRecognizer] = useState(null);
+
+  const socket = io("http://192.168.1.8:3000");
 
   useEffect(() => {
     // Initialize the Recognizer with angles to detect
@@ -77,40 +80,48 @@ function Detection() {
     }
   }, [touchPoints, recognizer]);
 
+  const sendMessageToServer = () => {
+    socket.emit("message", "Established connection");
+    console.log("Message sent to server: Established connection");
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>
-          Disk Angle:{" "}
-          {angle !== null ? angle.toFixed(2) + "°" : "No Disk Detected"}
-        </h1>
-        <h2>
-          Orientation:{" "}
-          {orientation !== null ? orientation.toFixed(2) + "°" : "N/A"}
-        </h2>
-        <div
-          style={{
-            transform: `rotate(${angle || 0}deg)`,
-            width: "100px",
-            height: "100px",
-            border: "1px solid #000",
-            margin: "50px auto",
-            borderRadius: "50%",
-            backgroundColor: "#f0f0f0",
-          }}
-        ></div>
-        <div>
-          <h2>Touch Points</h2>
-          <ul>
-            {touchPoints.map((point, index) => (
-              <li key={index}>
-                Point X: {point.x}, Point Y: {point.y}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        <header className="App-header">
+          <h1>
+            Disk Angle:{" "}
+            {angle !== null ? angle.toFixed(2) + "°" : "No Disk Detected"}
+          </h1>
+          <h2>
+            Orientation:{" "}
+            {orientation !== null ? orientation.toFixed(2) + "°" : "N/A"}
+          </h2>
+          <div
+            style={{
+              transform: `rotate(${angle || 0}deg)`,
+              width: "100px",
+              height: "100px",
+              border: "1px solid #000",
+              margin: "50px auto",
+              borderRadius: "50%",
+              backgroundColor: "#f0f0f0",
+            }}
+          ></div>
+          <div>
+            <h2>Touch Points</h2>
+            <ul>
+              {touchPoints.map((point, index) => (
+                <li key={index}>
+                  Point X: {point.x}, Point Y: {point.y}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </header>
+      </div>
+      <button onClick={sendMessageToServer}>Establish Connection</button>
+    </>
   );
 }
 
